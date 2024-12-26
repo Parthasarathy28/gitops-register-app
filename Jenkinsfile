@@ -16,6 +16,19 @@ pipeline {
                   git branch: 'main', credentialsId: 'github', url: 'https://github.com/Parthasarathy28/register-app.git'
                }
         }
+        stage("Push the changed deployment file to Git") {
+            steps {
+                sh """
+                   git config --global user.name "Parthasarathy28"
+                   git config --global user.email "parthasarathi.parandhaman@gmail.com"
+                   git add deployment.yaml
+                   git commit -m "Updated Deployment Manifest"
+                """
+                withCredentials([gitUsernamePassword(credentialsId: 'github', gitToolName: 'Default')]) {
+                  sh "git push https://github.com/Parthasarathy28/gitops-register-app.git"
+                }
+            }
+        }
 
                      
     }
